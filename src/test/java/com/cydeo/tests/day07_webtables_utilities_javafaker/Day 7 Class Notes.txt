@@ -1,0 +1,378 @@
+- Today's schedule:
+    - Review / Mock interview
+    - Task#1
+    - XPath review + additional functionality
+    - Webtables
+    - Utility methods
+    - More tasks
+
+------------------------------------------------------------------------------------
+DROPDOWNS
+
+- How do you handle dropdowns?
+    - Basically, I would first inspect the dropdown itself to determine what type of dropdown it is.
+    - If it is an HTML dropdown (Non-select) I can just locate it as any other web element, and just click to it.
+    - If it is a <select> dropdown, I will use the "Select" class coming from Selenium to handle it.
+
+- How do we get all of the options from a Select dropdown?
+    - .getOptions() method;
+
+- What is the return type?
+    - List<WebElement>
+
+- How do we get currently selected option?
+    - .getFirstSelectedOption();
+    - This method can be used to get the currently selected option.
+    - It means we can get the default selected value, but also we can change the option, and get whatever is currently selected as well.
+
+- What is the return type?
+    - It returns the currently selected option as a WebElement
+
+- How do we select options from a Select dropdown?
+    - We have 3 ways to select from a dropdown.
+
+    #1- selectByVisibleText : selects by the visible text of the option
+    #2- selectByIndex         : selects by the index order of the option. indexes start from 0.
+    #3- selectByValue        : selects using the value of the attribute "value"
+
+
+- Syntax of how do we handle Select dropdown?
+
+#1- Initially I would create the object of the Select class.
+#2- I would locate the dropdown, and pass it in the constructor.
+
+    Select dropdown = new Select(driver.findElement(By.LOCATOR("locator")));
+
+#3- I can now use the object to do any action on the dropdown itself.
+
+    dropdown.getOptions();
+    dropdown.selectByVisibleText();
+
+------------------------------------------------------------------------------------
+ALERTS
+
+- What is an alert?
+    - Some pop-ups happening on the page.
+    - Developers use different types of alerts to get the attention of the user to some specific thing on the screen.
+
+- How many types of alerts do we have?
+    - 2 types of alerts.
+
+    #1- HTML Alerts (Non-JS Alerts)
+        - HTML Alerts are part o the HTML code.
+        - We can inspect, locate, and click to handle them.
+        - There is nothing special about these alerts.
+        - Most of the time, they won't even block the rest of the page.
+
+    #2- JS Alerts
+        - JS Alerts are not part of the HTML page.
+        - It means, we can NOT inspect to locate them.
+        - We have to use the "Alert" from Selenium library.
+        - JS Alerts must be handled, otherwise they won't let user to click to anywhere on the page.
+
+- How many types of JS Alerts we have?
+    #1- Information/Warning Alert
+        - User can ONLY accept the alert.
+
+    #2- Confirmation Alert
+        - User can ACCEPT and DECLINE.
+
+    #3- Prompt Alert
+        - User can ACCEPT, DECLINE, and send text before doing actions.    
+
+
+- How do we handle Alerts using Selenium?
+    - I handle alerts using Alert coming from Selenium library.
+
+    syntax: Alert alert = driver.switchTo().alert();
+
+    alert.accept();
+    alert.decline();
+    alert.sendKeys("string");
+
+
+------------------------------------------------------------------------------------
+IFRAMES
+
+- What is an iframe?
+    - HTML inside of another HTML.
+    - It is created using <iframe> tag
+
+- How do we handle iframes?
+    - Selenium can focus only one thing at a time.
+    - So if there is an iframe on the page, Selenium driver will be focusing the main <html> by default.
+    - This means, I would explicitly have to switch my driver's focus to inner frame.
+    - Otherwise driver will not be able to locate the desired web elements, even if we provide the correct locators.
+
+- What happens if we do not switch to inner frame?
+    - NoSuchElementException will be thrown if we do not handle the iframe switching.
+
+- How many ways we have to switch to inner iframe?
+
+    syntax: driver.switchTo().frame();
+
+    - We have 3 ways to switch.
+
+    #1- index:
+        - we can pass the index number of the iframe.
+        - indexes start from 0, and goes from top to bottom.
+
+        syntax: driver.switchTo().frame(0);
+
+    #2- id-name:
+        - if we have id or name attribute, we can use their values to switch to certain iframe
+
+        syntax: 
+            driver.switchTo().frame(idValue);
+            driver.switchTo().frame(nameValue);
+
+    #3- WebElement
+        - if none of the above works, we can locate the iframe as a regular web element, and pass it into the .frame() method.
+
+        syntax: 
+            driver.switchTo().frame(WebElement);
+            driver.switchTo().frame(driver.findElement(By.LOCATOR));
+
+
+- How do we go switch driver's focus to outer iframe?
+    - driver.switchTo().defaultContent();
+    - driver.switchTo().parentFrame();
+
+- There is a minor difference in between these two methods.
+
+- If there is only one layer of <iframe>, both methods do the same job. 
+- They both will go back to the default content.
+
+- But if we have multiple layers of iframe, and we are trying to move out;
+    - The .parentFrame(); method will go back to direct parent (one layer)
+    - But .
+    (); method will skip any layers in between and directly go to the default content.
+
+------------------------------------------------------------------------------------
+WINDOWS
+
+- Is there any difference for selenium if it is a tab or window?
+    - No. There is no difference for Selenium in between tabs or windows. 
+    - Regardless, everything is a WINDOW.
+
+- How does Selenium knows which window is different from which?
+    - Windowshandles
+
+- What is a window handle?
+    - A randomly generated unique alphanumeric ID for each window opened by selenium.
+    - Every window has their own window handle randomly generated by selenium.
+
+- How do we get the current window's handle?
+    - .getWindowHandle();
+
+- What is the return type?
+    - String
+    - It will capture the current window's handle as a String and return it.
+
+- How do we get all of the currently opened windows' handles?
+    - .getWindowHandles();
+
+- What is the return type?
+    - Set<String>
+
+- syntax:
+    driver.switchTo().window(windowHandle);
+
+ 
+
+ 
+
+ 
+
+
+------------------------------------------------------------------------------------
+
+- XPATH:
+
+- How many types of xpath do we have?
+- 2 types
+
+#1- Absolute xpath:
+    - Starts with "/" single slash
+    - Starts from the root element -> "html" tag
+    - And it goes down 1 by 1
+    - Therefore it is not dependable
+    - If there is any change happens in the structure of the html page it will break easily
+
+#2- Relative xpath:
+    - Starts with "//" double slash
+    - "//" means jump to any given point/jump to first matching result
+
+    syntax: //tagName[@attribute='value']
+ 
+
+- Can we use "//" more than once in an xpath locator?
+- Yes, we can use // more than once.
+
+- How do we go from parent to DIRECT child?
+- "/" will take us to direct child
+
+    //tagName[@attribute='value']/directChildTag
+    //div[@attribute='value']/button
+
+    div
+        a
+        div
+        button
+    div
+
+    select
+        option
+        option
+        option
+    select
+
+
+- How do we go from parent to ANY child?
+- "//" will take us to any child.
+- It doesn't have to be directly under
+
+
+- How do we go from child to parent?
+- "/.."
+- We do not have to provide tag name here. It will just take to the parent.
+
+- How do we handle dynamic web elements?
+#1- I can locate a parent/child that is not dynamic and move from there
+#2- I will use the methods provided by xpath: contains, starts-with, ends-with
+
+    //tagName[contains(@attribute, 'value')]
+    //tagName[starts-with(@attribute, 'value')]
+    //tagName[ends-with(@attribute, 'value')]
+
+
+- How do we go from sibling to sibling?
+- There are two ways to move from sibling to sibling.
+
+- "/preceding-sibling::" --> will go to the siblings that come before
+- "/following-sibling::" --> will go to the siblings that comes after
+
+- The web element that we locate to move from, will become that STARTING POINT 0.
+- Depending on what we want to achieve, we will decide either use preceding or following siblings.
+
+ex: //option[@value='3']
+
+    <select>
+2        <option value="1">Orange 1</option>
+1        <option value="2">Orange 2</option>
+0        <option value="3">Orange 3</option>
+1        <option value="4">Orange 4</option>
+2        <option value="5">Orange 5</option>
+    </select>
+
+
+ex#1: Go to Orange 5 from Orange 3 using sibling.
+
+    //option[@value='3']/following-sibling::option[2]
+
+
+ex#2: Go to Orange 1 from Orange 4 using sibling.
+
+    //option[@value='4']/preceding-sibling::option[3]
+
+
+    <select>
+3        <option value="1">Orange 1</option>
+2        <option value="2">Orange 2</option>
+1        <option value="3">Orange 3</option>
+0        <option value="4">Orange 4</option>
+1        <option value="5">Orange 5</option>
+    </select>
+
+
+ex#3: Go to Orange 3 from Orange 4 using sibling.
+
+    //option[@value='4']/preceding-sibling::option[1] --> will return Orange 3
+
+
+------------------------------------------------------------------------
+WEB TABLES
+
+- HOW DO WE HANDLE WEB TABLES USING SELENIUM?
+- We write custom locators using xpath or cssSelector and get the data we want out from the table.
+
+- How do we create HTML web tables?
+#1- We use <table> tag
+#2- We use <tr> to create rows
+#3- We use <td> or <th> to create cells in different rows
+
+tr: table row
+td: table data
+th: table header 
+
+P1_WRITE A LOCATOR THAT RETURNS THE TABLE 1 ITSELF
+
+    //table[@id='table1']
+
+P2_WRITE A LOCATOR THAT RETURNS ALL OF THE ROWS INSIDE OF TABLE 1
+
+    //table[@id='table1']//tr --> This returns 5 rows (including row in thead)
+
+P3_WRITE A LOCATOR THAT RETURNS ALL OF THE ROWS INSIDE OF BODY OF TABLE 1
+
+    //table[@id='table1']/tbody//tr --> Returns 4 rows from inside of the <body> tag
+
+P4_WRITE A LOCATOR THAT RETURNS ONLY 3RD ROW IN THE BODY
+
+    //table[@id='table1']/tbody//tr[3]
+
+P5_WRITE A LOCATOR THAT RETURNS ALL OF THE CELLS IN ALL OF THE ROWS
+
+    //table[@id='table1']/tbody//tr//td
+
+P6_WRITE A LOCATOR THAT RETURNS ALL OF THE FIRST NAMES FROM THE TABLE 1
+
+    //table[@id='table1']/tbody//tr//td[2]
+
+
+P7_WRITE A LOCATOR THAT RETURNS FRANK'S CELL FROM THE TABLE 1
+
+    //table[@id='table1']/tbody//tr[2]//td[2]
+
+We are saying to our locator:
+
+//tr[2] : get me the second row in the tbody
+//td[2] : get me the second cell in the 2nd row
+
+P8_WRITE A LOCATOR THAT RETURNS FRANK'S CELL SPECIFICALLY USING "FRANK" TEXT
+
+    //table[@id='table1']//td[.='Frank']
+
+P9_WRITE A LOCATOR THAT RETURNS $100 CELL USING ITS TEXT
+
+    //table[@id='table1']//td[.='$100.00']
+
+P10_WRITE A LOCATOR THAT RETURNS FRANKS DUE AMOUNT BASED ON HIS FIRST NAME
+
+    ex#1: we locate frank using its text, then we move to parent element, and move back in to "due" cell
+
+    //table[@id='table1']//td[.='Frank']/../td[4]
+
+    ex#2: we can directly move from sibling to sibling.
+
+    //table[@id='table1']//td[.='Frank']/following-sibling::td[2]
+
+P11_WRITE A LOCATOR THAT RETURNS TIMS LAST NAME BASED ON HIS FIRST NAME
+
+    //table[@id='table1']/tbody//td[.='Tim']/preceding-sibling::td[1]
+
+
+P12_WRITE A LOCATOR THAT RETURNS ALL EMAILS THAT HAS $50 DUE AMOUNT
+
+    //table[@id='table1']/tbody//td[.='$50.00']/preceding-sibling::td[1]
+
+------------------------------------------------------------------------
+
+UTILITIES
+
+- We create utility methods when there is a certain logic that is repeating itself and we want to automate it by having a re-usable utility method.
+
+- We are going to have different layers of Utility methods.
+- Some utility methods are going to be used across the project. 
+    - BrowserUtility : this class will store utility methods that can be used across the project.
+    - Login : More page specific utility methods will be stored in their own classes.

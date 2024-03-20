@@ -1,0 +1,204 @@
+ Today's schedule:
+
+#1 --> Review - Mock interview
+	- Actions review 
+	- JavascriptExecutor
+	- Driver.closeDriver();
+
+#2 --> Practices
+	- JavascriptExecutor practice
+	- Actions practice
+
+#3 --> Framework approach topic
+
+#4 --> New topic introduction:
+	- Page Object Model Design Pattern
+	- Explicit Waits
+
+----------------------------------------------------------------------------------------	
+ACTIONS
+
+- What is the ACTIONS class? And why do we need it?
+
+	- Actions is just another class that is coming from Selenim library.
+	- It helps us handle "advanced" mouse and keyboard actions.
+	- Some advanced mouse and keyboard actions are;
+		- moveToElement
+		- clickAndHold
+		- dragAndDrop
+		- doubleClick
+		- contextClick
+		- keyDown
+		- keyUP
+		- release
+		- pause
+		- perform 
+	- We can build a chain of actions using the actions object.	
+	- BUT! it will not be executed until we use "perform()" method.
+
+
+- How do we use the Actions class and its object?
+	
+	#1- We create the Actions object
+	#2- Pass the 'driver' instance into the Actions constructor
+
+		Actions actions = new Actions(driver); or,
+		Actions actions = new Actions(Driver.getDriver()); 
+
+	#3- Use the object to reach the methods
+
+		actions.moveToElement(WebElement)
+
+	#4- We have to use the perform method to perform all the methods we use.
+
+		actions.moveToElement(WebElement).perform();
+
+----------------------------------------------------------------------------------------
+JavascriptExecutor
+
+- What is JavascriptExecutor?
+	- It is a simple interface coming from Selenium library that allows us to inject(pass,use) JavaScript functions (methods) into our JAVA-SELENIUM code.
+	- It just has 2 methods in it.
+		- executeScript 		: this method will wait until the JS code we pass to be completed.
+		- executeAsynchscript 	: this method won't wait for the JS code we pass to be completed to continue.
+
+- Why do we need it?
+	- JavaScript language is natively running in our browsers. Therefore, in some certain scenarios it helps to be able to pass some JS code in our JAVA-SELENIUM code.
+
+- How do we use it?
+	#1- We can't directly use JSExecutor, because we have to cast our WebDriver type to  JavascriptExecutor type.
+	#2- After casting we can use .executeScript method to pass JS code.
+
+	syntax: 
+
+	JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
+
+	js.executeScript("arguments[0].scrollIntoView(true)", cydeoLink, homeLink );
+
+----------------------------------------------------------------------------------------
+
+.quit, .close, Driver.closeDriver() methods differences?
+
+- What happens if we use .quit() method?
+	- It will close all of the windows/tabs that are opened in that session specifically.
+	- Selenium does not have access to the other browsers, tabs opened outside of that session.
+
+- What happens if we use .close() method?
+	- It will close the currently focused window/tab?
+
+- Why did we have to create a Driver.closeDriver() utility method? 
+
+----------------------------------------------------------------------------------------
+
+How to handle Closing or Quitting driver with Driver utility class?
+
+--> When we created a new .getDriver() method in Driver utility class and implemeted Singleton design pattern.
+
+--> This design pattern requires my driver to be "driver == null (true)" to be able to generate a new driver.
+
+--> When we use default driver.quit() method that is coming from Selenium library, we terminate the existing driver session completely.
+
+--> This creates issue for our existing structure. Since driver is not null or session is completely deleted/terminated, we cannot continue with our execution of following tests.
+
+--> To solve this issue, we created Driver.closeDriver() method.
+--> In this method 2 thing are happening:
+    #1- We use driver.quit() to terminate the session and close browsers.
+    #2- Set the driver session value back to "null", so rest of our tests can be executed.
+
+
+/*
+    This method will make sure our driver value is always null after using quit() method
+*/
+    public static void closeDriver(){
+        if (driver != null){
+            driver.quit(); // this line will terminate the existing session. value will not even be null
+            driver = null;
+        }
+    }
+
+
+
+----------------------------------------------------------------------------------------
+Let's understand what this line does?
+
+--> js.executeScript("arguments[0].scrollIntoView(true)", cydeoLink, homeLink );
+
+js.executeScript( 		--> this method accepts and applies the javascript code
+"arguments[0].			--> we are passing the index number of the argument
+scrollIntoView(true)", 	--> scroll until the given argument is in the view (IntoView)
+cydeoLink, homeLink );	--> this is where we pass our arguments to be scrolled based on the index we provide
+    0          1
+
+
+
+----------------------------------------------------------------------------------------
+So far, folder structure of our project:
+
+- src 
+	- main
+	- test
+		- java
+			- com
+				- cydeo
+					- pages
+					- tests (day packages with tests)
+					- utilities
+						- BrowserUtils
+						- Driver
+						- ConfigurationReader
+- configuration.properties
+- pom.xml 
+
+- Why did we create all these packages and utility classes?
+- The reason why we created different packages and different utility classes are because:
+	- re-usability
+	- easy to maintain
+	- less code & do more
+	- to centralize some important logic
+	- avoiding hardcoding 
+	- more efficient effort overall	 
+
+#1- configuration.properties: to centralize some important test data
+#2- Driver utility: to be able to instantiate our browser driver in less code and be able to use it in different classes and packages more efficiently
+#3- ConfigurationReader class: we want to effectively re-use the logic to be able to read from configuration.properties file
+#4- BrowserUtils: we centralized some general utility methods so we can use them in any package or any test we want...
+
+----------------------------------------------------------------------------------------
+
+PAGE OBJECT MODEL DESIGN PATTERN (POM)
+
+What is PAGE OBJECT MODEL DESIGN PATTERN?
+- Create a separate .java class for each page of the application.
+- Store the web elements in their own java class.
+- We can also store any relevant method specific to that page.
+- The only imporant structural point of the project we didn't centralize yet was the LOCATORS of our project.
+- Using POM Design Pattern now we will centralize our locators (WebElements) in their own respective Java classes.
+
+How are we going to implement POM Design Pattern?
+
+#1- Every time we create a java class for a new page of our application, we will initialize our driver instance with the object of that class.
+	- This will ensure, when we use the object of that class, the object will allow us to reach to the WebElements we store in that specific class.
+
+	LoginPage{
+
+		public LoginPage(){
+			PageFactory.initElements(driver, this);
+		}
+
+	}
+
+
+#2- Instead of using .findElement() method, we will use @FindBy annotations.
+
+@FindBy(id='locator')
+public WebElement searchBar;
+
+
+
+
+
+
+
+
+
+

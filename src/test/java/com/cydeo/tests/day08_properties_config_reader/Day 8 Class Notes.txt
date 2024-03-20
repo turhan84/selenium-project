@@ -1,0 +1,41 @@
+Today's schedule:
+
+- Warmup Tasks 1-2-3
+- Start creating our first important utility class & method
+	- What is Properties type file?
+		- How do we read from it?
+		- Why we need to use it?
+		- How do we implement it in our project?
+	- Create new class
+	- Create new method
+
+------------------------------------------------------------------------------------
+
+- Self analyzing:
+	- What is the topic?
+	- Why are we learning it?
+		- What issue we are solving with this?
+	- How are we implementing in our project?
+
+
+------------------------------------------------------------------------------------
+
+abc.properties
+
+configuration.properties 
+config.properties
+testData.properties
+test.properties
+
+IF YOU ALWAYS DO WHAT YOU HAVE ALWAYS DONE, YOU WILL ALWAYS BE WHERE YOU HAVE ALWAYS BEEN!
+
+
+
+
+
+
+
+
+
+
+

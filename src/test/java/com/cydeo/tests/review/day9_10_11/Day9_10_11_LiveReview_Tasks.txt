@@ -1,0 +1,63 @@
+
+day9_10_11 Live Review Tasks
+
+
+// TC: Guru99 Upload Test
+  //1. Go to  “https://demo.guru99.com/test/upload”
+  //2. Upload file into Choose File
+  //3. Click terms of service check box
+  //4. Click Submit File button
+  //5. Verify expected message appeared.
+  // Expected: “1 file
+   // has been successfully uploaded.
+
+
+================================
+MAC
+  1.Right click on the file
+  2.Hold option key
+  3.Select option Copy "file.txt" as Pathname
+WINDOWS
+  1.Hold Shift button
+  2.Right click on file
+  3.Copy as Path
+==================================
+
+---------------------------------
+
+
+// TC: Guru99 Drag and Drop Test
+  // 1- Open a chrome browser
+  // 2- Go to: https://demo.guru99.com/test/drag_drop.html
+  // 3- Drag “BANK” and drop into Account area under Debit Side
+  // 4- Drag “5000” and drop into Amount area under Debit Side
+
+
+---------------------------------
+
+
+// TC: WebdriverWait practice
+// 1. Go to https://practice.cydeo.com/dynamic_loading/1
+// 2. Click to start
+// 3. Wait until loading bar disappears
+// 4. Assert username inputbox is displayed
+// 5. Enter username: tomsmith
+// 6. Enter password: incorrectpassword
+// 7. Click to Submit button
+// 8. Assert “Your password is invalid!” text is displayed.
+
+
+// TC: WebdriverWait practice
+  Use SoftAssert for above practice in new Test method
+
+
+
+
+
+
+
+
+
+
+
+

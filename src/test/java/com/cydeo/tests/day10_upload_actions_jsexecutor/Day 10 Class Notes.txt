@@ -1,0 +1,157 @@
+Today's schedule: 
+
+- Review / mock interview
+- Task 
+- Upload & Download
+- Actions
+- JavascriptExecutor
+
+
+------------------------------------------------------------------------------------
+
+- What is configuration.properties file?
+	- configuration.properties file is just another type of file that allows us to store data in "key=value format"
+	- I created a utility method approach where I can read the values of this properties file
+	- It allows me to read/change/pass some of the key/important test data from outside of my code.
+
+------------------------------------------------------------------------------------
+- Why do we read from configuration.properties?
+- Why do we need this file? What are the benefits?
+	
+#1- We can avoid hard coding the important test data in our .java classes.
+#2- I can easily do cross-browser testing just by changing the value of the "browser" key 
+
+
+- What is cross-browser testing?
+- Doing the same tests in different browsers is called cross-browser testing.
+- SauceLabs (paid)
+
+#3- We can easily do DATA DRIVEN TESTING.
+
+- What is DATA DRIVEN TESTING?
+- DDT is running the same tests against different test data.
+
+- Since we are able to pass the test data from configuration.properties file, we can easily change some of the test data such as "searchValue", and run the same tests. And it would be DDT.
+
+
+------------------------------------------------------------------------------------
+
+- HOW do we read from configuration.properties?
+
+#1- Create Properties object.
+	Properties properties = new Properties();
+
+#2- Open the file in the java memory using FileInputStream.
+	FileInputStream file = new FileInputStream("thePathOfTheFile");
+
+#3- Load the file into the "properties" object
+	properties.load(file);
+
+#4- Use properties object to read values of keys.
+	properties.getProperty("key"); --> it will return the value of the given key.
+							"browser" --> chrome
+							"username" --> helpdesk12
+
+------------------------------------------------------------------------------------
+
+- Why did we create the ConfigurationReader?
+	- We wanted to create a re-usable utility method for the logic we created to read from configuration.properties file.
+	- We can call this method, and this method will trigger the steps to read from .properties file, and it will return us the value of the key we provide.
+
+------------------------------------------------------------------------------------
+DRIVER UTILITY:
+
+- Why did we create the Driver utility class and methods?
+
+#1- We were having hard time passing around the SAME driver instance in different classes and packages in our project.
+#2- We were writing way too much lines just to instantiate our "driver" object.
+#3- We are not just instantiating our driver, but we are also optimizing some of the important setups for our driver, such as:
+	- determine what type of browser will be open
+	- setup implicitlyWait time
+	- maximize our browser
+
+- How are we able to pass the same driver instance all the time?
+- We implemented the Singleton Design Pattern.
+
+- What is a Design Pattern?
+- Repeatable solution to a repeating problem. 
+
+- What is the Singleton Design Pattern?
+- Singleton Design Pattern allows us to pass the same instance of the given object at all times.
+- In our case, we are returning the WebDriver instance. 
+
+------------------------------------------------------------------------------------
+
+How do we implement Singleton Design Pattern? 
+
+#1- Create a private constructor. An object of this class can't be created.
+	
+	private Driver(){}
+
+#2- Create a private variable/object. 
+	
+	private static WebDriver driver;
+
+#3- Create a getter method to deliver the object in the way we want to deliver.
+	- The logic in .getDriver() method is basically; if driver does not exist it will create one, if it exists, it will be return to be re-used.
+	
+	public static WebDriver getDriver(){
+		if(driver==null){
+			//create me a new one
+		}
+		return driver;
+	}
+
+------------------------------------------------------------------------------------
+
+UPLOADS & DOWNLOADS:
+
+DOWNLOADS:
+	- We can download a file using Selenium by clickin a link that is existing on the HTML page.
+	- But after the file is downloaded, we cannot verify if the file is downloaded in our folder structure JUST BY USING SELENIUM.
+	- BUT! We can use Java "File" class to verify if a file is downloaded into our folders or not.
+
+syntax of verifying a file is downloaded using File class from Java library:
+
+	File file = new File("pathOfTheFile");
+	file.exists() --> this will return true if file is in the given path
+	Assert.assertTrue(file.exists());
+
+UPLOADS:
+	#1- Locate the "chooseFile" button from HTML code
+	#2- Send the path of the file we are trying to upload using .sendKeys() method
+	#3- If there is a button to finalize the upload, we click to it
+	#4- Verify whatever web element is showing the file is uploaded
+
+------------------------------------------------------------------------------------
+
+ACTIONS:
+
+	- Actions class helps us do "advanced" mouse and keyboard actions, such as;
+		- double click
+		- right click
+		- click and hold
+		- drag and drop
+		- context click
+
+https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/interactions/Actions.html
+
+------------------------------------------------------------------------------------
+
+P.I.Q: How many ways you know how to scroll using Selenium?
+
+#1- actions.moveToElement(WebElement).perform();
+#2- actions.sendKeys(Keys.PageUP, or Keys.PageDOWN).perform();
+#3- scroll down using JSExecutor: window.scrollBy(0,750)
+#4- arguments[0].scrollIntoView --> pass into the JSExecutor
+
+
+
+
+
+
+
+
+
+
+
